@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gachakuta Anime Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+    body { background: #0d0d0d; color: #eee; overflow-x: hidden; }
+
+    /* Neon Anime Colors */
+    :root {
+      --neon-red: #ff2e2e;
+      --neon-blue: #3bb4ff;
+      --dark-bg: #0d0d0d;
+      --card-bg: #151515;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+      padding: 4rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      color: var(--neon-red);
+      text-shadow: 0 0 10px var(--neon-red);
+    }
+
+    header p { opacity: 0.8; font-size: 1.2rem; }
+
+    /* Profile Image */
+    .pfp {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 4px solid var(--neon-blue);
+      box-shadow: 0 0 20px var(--neon-blue);
+      margin: 1.5rem auto;
+      display: block;
+    }
+
+    /* Sections */
+    section { max-width: 1000px; margin: auto; padding: 3rem 1rem; }
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    /* Project Grid */
+    .projects { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+    .card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid #222;
+      box-shadow: 0 0 10px #000;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      border-color: var(--neon-red);
+      box-shadow: 0 0 15px var(--neon-red);
+    }
+
+    /* Glitch Animation */
+    .glitch {
+      font-size: 2rem;
+      color: var(--neon-red);
+      position: relative;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px var(--neon-blue); }
+      50% { text-shadow: -2px -2px var(--neon-red); }
+      100% { text-shadow: 2px 2px var(--neon-blue); }
+    }
+
+    footer { text-align: center; padding: 2rem; background: #0a0a0a; color: #555; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 class="glitch">Your Name</h1>
+    <img src="pfp.jpg" alt="Profile" class="pfp" />
+    <p>Aspiring Developer • Anime Enthusiast • Creator</p>
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>
+      I am a passionate creator who loves anime-inspired visuals and futuristic cyberpunk aesthetics.
+      I enjoy crafting interactive, animated web experiences.
+    </p>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="projects">
+
+      <div class="card">
+        <h3>Cyber Hack</h3>
+        <p>A hacking mini–game inspired by neon anime styles.</p>
+      </div>
+
+      <div class="card">
+        <h3>Mecha Battle</h3>
+        <p>A battle simulator themed around mechanical anime.</p>
+      </div>
+
+      <div class="card">
+        <h3>Neon City</h3>
+        <p>A UI/UX project with glowing neon visuals.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Your Name — Anime Portfolio</p>
+  </footer>
+
+</body>
+</html>
