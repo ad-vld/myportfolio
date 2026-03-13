@@ -1,137 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gachakuta Anime Portfolio</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Velarde Arnold — Simple Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body { background: #0d0d0d; color: #eee; overflow-x: hidden; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --neon-cyan: #00f5ff;
+    --neon-purple: #bf5fff;
+    --neon-green: #39ff85;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --border: rgba(255,255,255,0.06);
+  }
 
-    /* Neon Anime Colors */
-    :root {
-      --neon-red: #ff2e2e;
-      --neon-blue: #3bb4ff;
-      --dark-bg: #0d0d0d;
-      --card-bg: #151515;
-    }
+  html { scroll-behavior: smooth; }
 
-    /* Header */
-    header {
-      background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-      padding: 4rem 1rem;
-      text-align: center;
-      position: relative;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
 
-    header h1 {
-      font-size: 3.5rem;
-      color: var(--neon-red);
-      text-shadow: 0 0 10px var(--neon-red);
-    }
+  .scanline {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none; z-index: 999;
+  }
 
-    header p { opacity: 0.8; font-size: 1.2rem; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 2.5rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
 
-    /* Profile Image */
-    .pfp {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 4px solid var(--neon-blue);
-      box-shadow: 0 0 20px var(--neon-blue);
-      margin: 1.5rem auto;
-      display: block;
-    }
+  .nav-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem; color: var(--neon-cyan);
+  }
 
-    /* Sections */
-    section { max-width: 1000px; margin: auto; padding: 3rem 1rem; }
-    h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--neon-blue);
-      text-shadow: 0 0 10px var(--neon-blue);
-    }
+  .nav-links { display: flex; gap: 2rem; }
 
-    /* Project Grid */
-    .projects { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--neon-cyan); }
 
-    .card {
-      background: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 12px;
-      border: 2px solid #222;
-      box-shadow: 0 0 10px #000;
-      transition: 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
+  header {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; padding: 7rem 2rem 4rem;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,245,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(191,95,255,0.06) 0%, transparent 60%);
+  }
 
-    .card:hover {
-      transform: scale(1.05);
-      border-color: var(--neon-red);
-      box-shadow: 0 0 15px var(--neon-red);
-    }
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  }
 
-    /* Glitch Animation */
-    .glitch {
-      font-size: 2rem;
-      color: var(--neon-red);
-      position: relative;
-      animation: glitch 1s infinite;
-    }
+  .avatar-wrap {
+    position: relative; margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
 
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px var(--neon-blue); }
-      50% { text-shadow: -2px -2px var(--neon-red); }
-      100% { text-shadow: 2px 2px var(--neon-blue); }
-    }
+  .avatar-wrap::before {
+    content: '';
+    position: absolute; inset: -6px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: conic-gradient(var(--neon-cyan), var(--neon-purple), var(--neon-green), var(--neon-cyan)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    animation: spin 6s linear infinite;
+  }
 
-    footer { text-align: center; padding: 2rem; background: #0a0a0a; color: #555; margin-top: 2rem; }
-  </style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .avatar {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; position: relative; z-index: 1;
+    border: 2px solid rgba(0,245,255,0.15);
+  }
+
+  .status-dot {
+    position: absolute; bottom: 6px; right: 6px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--neon-green);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px var(--neon-green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1;
+    animation: fadeUp 0.8s 0.15s ease both;
+    opacity: 0; animation-fill-mode: forwards;
+  }
+
+  .name-accent { color: var(--neon-cyan); }
+
+  .tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem; color: var(--neon-purple);
+    margin: 0.6rem 0 1.2rem;
+    animation: fadeUp 0.8s 0.3s ease both;
+    opacity: 0; animation-fill-mode: forwards;
+  }
+  .tagline::before { content: '> '; color: var(--neon-green); }
+
+  .intro-text {
+    max-width: 500px; font-size: 1rem;
+    color: var(--muted); line-height: 1.7;
+    animation: fadeUp 0.8s 0.45s ease both;
+    opacity: 0; animation-fill-mode: forwards;
+  }
+
+  .cta-row {
+    display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.6s ease both;
+    opacity: 0; animation-fill-mode: forwards;
+  }
+
+  .btn {
+    padding: 0.65rem 1.5rem; border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--neon-cyan); color: #000;
+    border: none;
+    box-shadow: 0 0 20px rgba(0,245,255,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,245,255,0.55); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent; color: var(--neon-cyan);
+    border: 1px solid rgba(0,245,255,0.35);
+  }
+  .btn-ghost:hover { background: rgba(0,245,255,0.07); transform: translateY(-2px); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+    color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 6px;
+    animation: fadeUp 1s 1s ease both; opacity: 0; animation-fill-mode: forwards;
+  }
+  .scroll-arrow {
+    width: 1px; height: 30px;
+    background: linear-gradient(var(--neon-cyan), transparent);
+    animation: scrollAnim 2s ease infinite;
+  }
+  @keyframes scrollAnim {
+    0%{opacity:0;transform:scaleY(0);transform-origin:top}
+    50%{opacity:1;transform:scaleY(1)}
+    100%{opacity:0;transform:scaleY(1);transform-origin:bottom}
+  }
+
+  section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; color: var(--neon-green);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-label::before { content: '// '; }
+
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800; margin-bottom: 2.5rem;
+    position: relative; display: inline-block;
+  }
+  h2::after {
+    content: '';
+    position: absolute; bottom: -6px; left: 0;
+    width: 40%; height: 2px;
+    background: linear-gradient(90deg, var(--neon-cyan), transparent);
+  }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;
+  }
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  .about-text { color: var(--muted); line-height: 1.8; font-size: 0.97rem; }
+
+  .skills-block h3 {
+    font-size: 0.8rem; font-family: 'Share Tech Mono', monospace;
+    color: var(--neon-purple); margin-bottom: 1rem; letter-spacing: 0.1em;
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .tag {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.75rem;
+    padding: 4px 12px; border-radius: 3px;
+    border: 1px solid var(--border); color: var(--muted);
+    transition: all 0.2s; cursor: default;
+  }
+  .tag:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); background: rgba(0,245,255,0.05); }
+
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;
+  }
+
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent); box-shadow: 0 0 12px var(--accent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+  }
+  .project-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+
+  .card-icon {
+    font-size: 22px; width: 44px; height: 44px; border-radius: 6px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .card-links { display: flex; gap: 8px; }
+
+  .card-link {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+    padding: 4px 10px; border-radius: 3px;
+    border: 1px solid var(--border); color: var(--muted);
+    text-decoration: none; transition: all 0.2s;
+  }
+  .card-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  .project-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .project-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tech {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+    color: color-mix(in srgb, var(--accent) 80%, white);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    padding: 2px 8px; border-radius: 3px;
+  }
+
+  .contact-inner {
+    border: 1px solid var(--border); border-radius: 12px; padding: 3rem; text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(191,95,255,0.06), transparent 70%), var(--card);
+  }
+  .contact-inner p { color: var(--muted); margin-bottom: 2rem; line-height: 1.7; max-width: 420px; margin-left: auto; margin-right: auto; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; margin: 0 auto 2rem; text-align: left; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; }
+  .form-group input, .form-group textarea {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 4px; padding: 0.65rem 1rem;
+    color: var(--text); font-family: 'Syne', sans-serif; font-size: 0.9rem;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: rgba(0,245,255,0.4); box-shadow: 0 0 0 3px rgba(0,245,255,0.07);
+  }
+  .form-group textarea { min-height: 110px; }
+
+  .btn-send {
+    align-self: flex-end; background: var(--neon-cyan); color: #000;
+    border: none; padding: 0.7rem 2rem; border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,245,255,0.25); transition: all 0.2s;
+  }
+  .btn-send:hover { box-shadow: 0 0 30px rgba(0,245,255,0.5); transform: translateY(-2px); }
+
+  .form-success {
+    display: none; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: var(--neon-green);
+    text-align: center; padding: 0.75rem;
+    border: 1px solid rgba(57,255,133,0.25); border-radius: 4px; background: rgba(57,255,133,0.05);
+    max-width: 480px; margin: 0 auto 1.5rem;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem auto; max-width: 480px; }
+
+  .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.82rem;
+    padding: 0.6rem 1.2rem; border-radius: 4px;
+    border: 1px solid var(--border); color: var(--muted);
+    text-decoration: none; transition: all 0.2s;
+  }
+  .contact-link:hover { transform: translateY(-2px); }
+  .contact-link.c { border-color: rgba(0,245,255,0.3); color: var(--neon-cyan); }
+  .contact-link.c:hover { background: rgba(0,245,255,0.06); box-shadow: 0 0 16px rgba(0,245,255,0.15); }
+  .contact-link.p { border-color: rgba(191,95,255,0.3); color: var(--neon-purple); }
+  .contact-link.p:hover { background: rgba(191,95,255,0.06); box-shadow: 0 0 16px rgba(191,95,255,0.15); }
+  .contact-link.g { border-color: rgba(57,255,133,0.3); color: var(--neon-green); }
+  .contact-link.g:hover { background: rgba(57,255,133,0.06); box-shadow: 0 0 16px rgba(57,255,133,0.15); }
+
+  .theme-toggle {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; padding: 4px 10px; border-radius: 3px;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .theme-toggle:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+
+  body.light {
+    --bg: #f4f4f8; --surface: #ececf2; --card: #e8e8f0;
+    --text: #1a1a2e; --muted: #5a5a72; --border: rgba(0,0,0,0.08);
+    --neon-cyan: #0099bb; --neon-purple: #8833cc; --neon-green: #1a9945;
+  }
+  body.light .grid-bg {
+    background-image:
+      linear-gradient(rgba(0,150,200,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,150,200,0.06) 1px, transparent 1px);
+  }
+  body.light nav { background: rgba(244,244,248,0.9); }
+  body.light .form-group input, body.light .form-group textarea { background: rgba(0,0,0,0.03); }
+
+  footer {
+    text-align: center; padding: 2rem;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
+    color: var(--muted); border-top: 1px solid var(--border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1 class="glitch">Your Name</h1>
-    <img src="pfp.jpg" alt="Profile" class="pfp" />
-    <p>McDo Crew • Student • Independent</p>
-  </header>
+<div class="scanline"></div>
 
-  <section>
-    <h2>About Me</h2>
-    <p>
-      I Am working student and 3rd year College in Angeles City
-      I have interest in music and also i really do watching anime.
-      I play video game like Valorant!
-    </p>
-  </section>
+<nav>
+  <span class="nav-logo">Ad1e</span>
+  <div class="nav-links">
+    <a href="#About">About</a>
+    <a href="#Projects">Projects</a>
+    <a href="#Contact">Contact</a>
+  </div>
+  <button class="theme-toggle" id="themeBtn">[ Light ]</button>
+</nav>
 
-  <section>
-    <h2>C301</h2>
-    <div class="projects">
+<header>
+  <div class="grid-bg"></div>
+  <div class="avatar-wrap">
+    <div class="avatar">🦈</div>
+    <div class="status-dot"></div>
+  </div>
+  <h1>Hello, Ako si <span class="name-accent">Arnold</span></h1>
+  <p class="tagline">Working Student &amp; CS Student</p>
+  <p class="intro-text">Isa akong normal na estudyante lamang. May pangarap sa buhay at sa pamamagitan ng pagtatrabaho at pag-aaral balang araw matutupad ko rin ang aking mga pangarap. </p>
+  <div class="cta-row">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="#contact" class="btn btn-ghost">Pindot ka</a>
+  </div>
+  <div class="scroll-hint">scroll<div class="scroll-arrow"></div></div>
+</header>
 
-      <div class="card">
-        <h3>Projects</h3>
-        <p>This is my art!</p>
-      </div>
-
-      <div class="card">
-        <h3>Contacts</h3>
-        <p>You can sight my personal account!</p>
-      </div>
-
-      <div class="card">
-        <h3>About Me</h3>
-        <p>I will tell you everything!</p>
-      </div>
-
+<section id="about">
+  <h2>Tungkol sakin</h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>Panganay ako sa aming magkakapatid at tumatayo sa sarili kong mga paa sa tulong at awa ng Diyos. Mahilig ako sa peace of mind kung kaya't ganto nalang ka simple ang aking buhay. Habang lumilipas ang panahon sana maintindihan ko kung ako nandidito! </p>
+      <br>
+      <p>Motto ko sa buhay ay ang mag ka motto!</p>
     </div>
-  </section>
+    <div class="skills-block">
+      <div class="skill-tags">
+        <span class="tag">CapCut</span><span class="tag">Reels</span>
+        <span class="tag">TikTok</span><span class="tag">Clips</span>
+        <span class="tag">Nature</span><span class="tag">PeaceOfMind</span>
+        <span class="tag">GodWorks</span><span class="tag">HappyLife</span>
+        <span class="tag">Clutch</span><span class="tag">1v5</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <p>© 2026 Arnold — MY Portfolio</p>
-  </footer>
+<section id="projects">
+  <h2>Flood Control Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card reveal" style="--accent:#00f5ff;">
+      <div class="card-top">
+        <div class="card-icon" style="--accent:#00f5ff;">🎬</div>
+        <div class="card-links">
+          <a href="#" class="card-link">Tutorial</a>
+          <a href="#" class="card-link">Lifehack</a>
+        </div>
+      </div>
+      <h3>Simple Editing</h3>
+      <p>Basic lang gamit lang kayo CapCut.</p>
+      <div class="tech-stack">
+        <span class="tech" style="--accent:#00f5ff;">CapCut</span>
+        <span class="tech" style="--accent:#00f5ff;">TikTok</span>
+        <span class="tech" style="--accent:#00f5ff;">Reels</span>
+        <span class="tech" style="--accent:#00f5ff;">Clips</span>
+      </div>
+    </div>
+    <div class="project-card reveal" style="--accent:#bf5fff;">
+      <div class="card-top">
+        <div class="card-icon" style="--accent:#bf5fff;">🏞️</div>
+        <div class="card-links">
+          <a href="#" class="card-link">Bench</a>
+          <a href="#" class="card-link">10/10</a>
+        </div>
+      </div>
+      <h3>Simplescape</h3>
+      <p>Kung saan masarap ang mabuhay at makita ang gawa ng panginoon at tao.</p>
+      <div class="tech-stack">
+        <span class="tech" style="--accent:#bf5fff;">PeaceOfMind</span>
+        <span class="tech" style="--accent:#bf5fff;">WorkOfGod</span>
+        <span class="tech" style="--accent:#bf5fff;">Nature</span>
+        <span class="tech" style="--accent:#bf5fff;">HappyLife</span>
+      </div>
+    </div>
+    <div class="project-card reveal" style="--accent:#39ff85;">
+      <div class="card-top">
+        <div class="card-icon" style="--accent:#39ff85;">🎯</div>
+        <div class="card-links">
+          <a href="#" class="card-link">Pro-gentle</a>
+        </div>
+      </div>
+      <h3>ValoClips</h3>
+      <p>Simple tip para maging isang pro sa paglalaro ng valo!</p>
+      <div class="tech-stack">
+        <span class="tech" style="--accent:#39ff85;">Clutch</span>
+        <span class="tech" style="--accent:#39ff85;">1v5</span>
+        <span class="tech" style="--accent:#39ff85;">Line-up</span>
+        <span class="tech" style="--accent:#39ff85;">Aim</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Pindot ka nga</h2>
+  <div class="contact-inner reveal">
+    <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:1rem;">Let's go!</h3>
+    <p>Mag apply kung pano maging masaya at maging payapa ang buhay </p>
+    <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">NAME</label>
+          <input type="text" id="fname" placeholder="Arnold Velarde" required />
+        </div>
+        <div class="form-group">
+          <label for="femail">EMAIL</label>
+          <input type="email" id="femail" placeholder="arnoldvelardejr@gmail.com" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fsubject">SUBJECT</label>
+        <input type="text" id="fsubject" placeholder="Pwede kahit anong sabihin mo" required />
+      </div>
+      <div class="form-group">
+        <label for="fmsg">MESSAGE</label>
+        <textarea id="fmsg" placeholder="Anong problema parekoy?" required></textarea>
+      </div>
+      <button type="submit" class="btn-send">nandito lang ako →</button>
+    </form>
+    <div class="form-success" id="formSuccess">
+      ✓ &nbsp;Magpanggap lang ako sandali tapos okay na!
+    </div>
+    <hr class="divider" />
+    <div class="contact-links">
+      <a href="#" class="contact-link p">✉ Email Me</a>
+      <a href="#" class="contact-link p">in LinkedIn</a>
+      <a href="#" class="contact-link g">⌥ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+    <span style="color:var(--neon-cyan);">ad1e</span> &nbsp;·&nbsp; lubos na gumagalang &amp; at naglilingkod &nbsp;·&nbsp; 2025
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  const btn = document.getElementById('themeBtn');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    btn.textContent = document.body.classList.contains('light') ? '[ dark ]' : '[ light ]';
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+    form.style.opacity = '0.4';
+    form.style.pointerEvents = 'none';
+    setTimeout(() => {
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }, 600);
+  }
+</script>
 
 </body>
 </html>
