@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simplescape — Ad1e</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#0a0a0f; --card:#16161f; --accent:#bf5fff;
+  --text:#e8e8f0; --muted:#6b6b80; --border:rgba(255,255,255,0.06);
+}
+body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; overflow-x:hidden; }
+
+.scanline {
+  position:fixed; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none; z-index:999;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 2.5rem;
+  background:rgba(10,10,15,0.88); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo { font-family:'Share Tech Mono',monospace; font-size:.9rem; color:var(--accent); text-decoration:none; }
+.nav-back {
+  display:flex; align-items:center; gap:7px;
+  font-family:'Share Tech Mono',monospace; font-size:.78rem;
+  color:var(--muted); text-decoration:none; transition:color .2s;
+  border:1px solid var(--border); padding:5px 12px; border-radius:4px;
+}
+.nav-back:hover { color:var(--accent); border-color:rgba(191,95,255,.3); }
+.nav-back svg { transition:transform .2s; }
+.nav-back:hover svg { transform:translateX(-3px); }
+
+/* HERO */
+.hero {
+  min-height:40vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:8rem 2rem 3rem; text-align:center; position:relative;
+  background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(191,95,255,0.1) 0%, transparent 70%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(191,95,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191,95,255,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 0%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-icon {
+  font-size:54px; margin-bottom:1rem; position:relative; z-index:1;
+  filter:drop-shadow(0 0 22px rgba(191,95,255,0.6));
+  animation:float 5s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero h1 {
+  font-size:clamp(2rem,5vw,3.2rem); font-weight:800; letter-spacing:-.02em;
+  position:relative; z-index:1;
+  background:linear-gradient(135deg,#e8e8f0 30%,var(--accent));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:fadeUp .7s ease both;
+}
+.hero-sub {
+  font-family:'Share Tech Mono',monospace; font-size:.9rem; color:var(--muted);
+  margin-top:.6rem; position:relative; z-index:1;
+  animation:fadeUp .7s .15s ease both; opacity:0; animation-fill-mode:forwards;
+}
+.hero-sub::before { content:'> '; color:var(--accent); }
+.hero-tags {
+  display:flex; gap:.5rem; margin-top:1.2rem; flex-wrap:wrap; justify-content:center;
+  position:relative; z-index:1;
+  animation:fadeUp .7s .3s ease both; opacity:0; animation-fill-mode:forwards;
+}
+.htag {
+  font-family:'Share Tech Mono',monospace; font-size:.72rem;
+  padding:4px 12px; border-radius:3px;
+  background:rgba(191,95,255,.08); border:1px solid rgba(191,95,255,.25); color:var(--accent);
+}
+
+main { max-width:900px; margin:0 auto; padding:3rem 2rem 6rem; }
+
+.section-label {
+  font-family:'Share Tech Mono',monospace; font-size:.72rem; color:var(--accent);
+  letter-spacing:.15em; text-transform:uppercase; margin-bottom:.5rem;
+}
+.section-label::before { content:'// '; }
+h2 {
+  font-size:1.6rem; font-weight:800; margin-bottom:1.8rem;
+  position:relative; display:inline-block;
+}
+h2::after {
+  content:''; position:absolute; bottom:-5px; left:0;
+  width:40%; height:2px; background:linear-gradient(90deg,var(--accent),transparent);
+}
+
+.about-box {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:2rem; margin-bottom:3rem;
+}
+.about-box p { color:var(--muted); line-height:1.8; font-size:.95rem; margin-bottom:1rem; }
+.about-box p:last-child { margin-bottom:0; }
+.about-box strong { color:var(--text); }
+
+/* QUOTE */
+.quote-block {
+  border-left:3px solid var(--accent); padding:1rem 1.5rem; margin-bottom:3rem;
+  background:rgba(191,95,255,.04); border-radius:0 8px 8px 0;
+}
+.quote-text { font-size:1.05rem; color:var(--text); font-style:italic; line-height:1.7; margin-bottom:.5rem; }
+.quote-src { font-family:'Share Tech Mono',monospace; font-size:.72rem; color:var(--muted); }
+
+/* VIBES */
+.vibes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:3rem; }
+.vibe-card {
+  background:var(--card); border:1px solid var(--border); border-radius:8px;
+  padding:1.5rem; text-align:center; transition:all .2s;
+}
+.vibe-card:hover { border-color:rgba(191,95,255,.35); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.4); }
+.vibe-icon { font-size:28px; margin-bottom:.5rem; }
+.vibe-label { font-family:'Share Tech Mono',monospace; font-size:.75rem; color:var(--accent); margin-bottom:.3rem; }
+.vibe-desc { font-size:.82rem; color:var(--muted); line-height:1.5; }
+
+/* UPLOAD */
+.upload-section { margin-bottom:3.5rem; }
+.upload-zone {
+  border:2px dashed rgba(191,95,255,.25); border-radius:10px;
+  padding:3rem 2rem; text-align:center; cursor:pointer;
+  transition:all .3s; background:rgba(191,95,255,.02);
+}
+.upload-zone:hover, .upload-zone.drag { border-color:var(--accent); background:rgba(191,95,255,.06); box-shadow:0 0 28px rgba(191,95,255,.12); }
+.upload-icon { font-size:36px; margin-bottom:.75rem; display:block; }
+.upload-title { font-family:'Share Tech Mono',monospace; font-size:.95rem; color:var(--text); margin-bottom:.4rem; }
+.upload-sub { font-family:'Share Tech Mono',monospace; font-size:.75rem; color:var(--muted); }
+.upload-sub span { color:var(--accent); }
+#fileInput { display:none; }
+
+/* GALLERY — masonry feel */
+.gallery-grid {
+  columns:3 200px; column-gap:12px; margin-top:1.5rem;
+}
+.gallery-item {
+  background:var(--card); border:1px solid var(--border); border-radius:8px;
+  overflow:hidden; margin-bottom:12px; break-inside:avoid;
+  transition:all .25s; position:relative;
+  animation:fadeUp .5s ease both;
+}
+.gallery-item:hover { border-color:rgba(191,95,255,.4); transform:scale(1.01); box-shadow:0 8px 28px rgba(0,0,0,.5); }
+.gallery-item img { width:100%; display:block; }
+.gallery-item video { width:100%; display:block; }
+.gallery-item .file-preview {
+  width:100%; height:130px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:8px;
+}
+.file-icon { font-size:28px; }
+.file-ext {
+  font-family:'Share Tech Mono',monospace; font-size:.65rem;
+  color:var(--accent); background:rgba(191,95,255,.1);
+  border:1px solid rgba(191,95,255,.2); padding:2px 8px; border-radius:3px;
+}
+.item-bar {
+  padding:7px 10px; display:flex; align-items:center; justify-content:space-between;
+  border-top:1px solid var(--border);
+}
+.item-name { font-family:'Share Tech Mono',monospace; font-size:.65rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px; }
+.item-del { background:none; border:none; color:var(--muted); cursor:pointer; font-size:13px; padding:2px 5px; border-radius:3px; transition:all .2s; }
+.item-del:hover { color:#ff5f57; background:rgba(255,95,87,.1); }
+
+.empty-state {
+  text-align:center; padding:2.5rem; color:var(--muted);
+  font-family:'Share Tech Mono',monospace; font-size:.8rem;
+  border:1px solid var(--border); border-radius:8px;
+  background:rgba(255,255,255,.01); margin-top:1.5rem;
+}
+.empty-state .e-icon { font-size:30px; margin-bottom:.5rem; opacity:.4; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">Ad1e</a>
+  <a class="nav-back" href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-icon">🏞️</div>
+  <h1>Simplescape</h1>
+  <p class="hero-sub">Peace · Nature · God's Work · Happy Life</p>
+  <div class="hero-tags">
+    <span class="htag">PeaceOfMind</span>
+    <span class="htag">Nature</span>
+    <span class="htag">GodWorks</span>
+    <span class="htag">HappyLife</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="section-label reveal">About</div>
+  <div class="about-box reveal">
+    <p>Dito ko ini-share ang mga bagay na nagbibigay sa akin ng <strong>kapayapaan ng isip</strong>. Mula sa simpleng tanawin, hanggang sa mga momentong nagpaparamdam na may dahilan ka para mabuhay.</p>
+    <p>Ang buhay ay hindi palaging madali pero <strong>laging may maganda kung titingnan mo</strong>. Upload mo ang iyong mga nature photos at peaceful moments dito!</p>
+  </div>
+
+  <div class="quote-block reveal">
+    <p class="quote-text">"Ang kapayapaan ay hindi wala sa dako pa roon — nandito na siya, sa bawat simpleng sandali."</p>
+    <p class="quote-src">— Simpleng Aral ng Buhay</p>
+  </div>
+
+  <div class="section-label reveal">Vibes</div>
+  <h2 class="reveal">My Simple Vibes</h2>
+  <div class="vibes-grid">
+    <div class="vibe-card reveal">
+      <div class="vibe-icon">🌅</div>
+      <div class="vibe-label">SUNRISE</div>
+      <p class="vibe-desc">Bawat umaga ay bagong simula. Simple lang pero profound.</p>
+    </div>
+    <div class="vibe-card reveal">
+      <div class="vibe-icon">🌿</div>
+      <div class="vibe-label">NATURE</div>
+      <p class="vibe-desc">Ang kagandahan ng mundo ay libre para sa lahat.</p>
+    </div>
+    <div class="vibe-card reveal">
+      <div class="vibe-icon">🙏</div>
+      <div class="vibe-label">GRATITUDE</div>
+      <p class="vibe-desc">Magpasalamat sa maliit. Doon nagsisimula ang kasiyahan.</p>
+    </div>
+    <div class="vibe-card reveal">
+      <div class="vibe-icon">☁️</div>
+      <div class="vibe-label">PEACE</div>
+      <p class="vibe-desc">Minsan ang pinaka-okay na gawin ay ang walang gawin.</p>
+    </div>
+  </div>
+
+  <div class="upload-section reveal">
+    <div class="section-label">Gallery</div>
+    <h2>My Photos &amp; Moments</h2>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <span class="upload-icon">🌿</span>
+      <p class="upload-title">I-upload ang iyong mga photos dito</p>
+      <p class="upload-sub">Drag &amp; drop o <span>click para mag-browse</span> — PNG, JPG, GIF, Video</p>
+      <input type="file" id="fileInput" multiple accept="image/*,video/*" />
+    </div>
+    <div id="gallery" class="gallery-grid"></div>
+    <div class="empty-state" id="emptyState">
+      <div class="e-icon">🏞️</div>
+      Wala pang photos. I-share ang iyong mga peaceful moments!
+    </div>
+  </div>
+
+</main>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+const gallery = document.getElementById('gallery');
+const emptyState = document.getElementById('emptyState');
+let fc = 0;
+
+function updateEmpty() { emptyState.style.display = gallery.children.length === 0 ? 'block' : 'none'; }
+
+function addFile(file) {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  item.style.animationDelay = (fc * 0.06) + 's';
+  fc++;
+  const url = URL.createObjectURL(file);
+  const name = file.name.length > 18 ? file.name.slice(0,15)+'...' : file.name;
+  const ext = file.name.split('.').pop().toUpperCase();
+  let preview = file.type.startsWith('image/')
+    ? `<img src="${url}" alt="${file.name}" loading="lazy"/>`
+    : file.type.startsWith('video/')
+    ? `<video src="${url}" muted loop preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0"></video>`
+    : `<div class="file-preview"><div class="file-icon">📄</div><div class="file-ext">${ext}</div></div>`;
+  item.innerHTML = `${preview}<div class="item-bar"><span class="item-name">${name}</span><button class="item-del" onclick="this.closest('.gallery-item').remove();updateEmpty()">✕</button></div>`;
+  gallery.appendChild(item);
+  updateEmpty();
+}
+
+fileInput.addEventListener('change', e => { [...e.target.files].forEach(addFile); fileInput.value=''; });
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag'); [...e.dataTransfer.files].forEach(addFile); });
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); } });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+updateEmpty();
+</script>
+</body>
+</html>
