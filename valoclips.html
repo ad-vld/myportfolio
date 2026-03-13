@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ValoClips — Ad1e</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#0a0a0f; --card:#16161f; --accent:#39ff85;
+  --text:#e8e8f0; --muted:#6b6b80; --border:rgba(255,255,255,0.06);
+  --red:#ff4655;
+}
+body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; overflow-x:hidden; }
+
+.scanline {
+  position:fixed; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none; z-index:999;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 2.5rem;
+  background:rgba(10,10,15,0.88); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo { font-family:'Share Tech Mono',monospace; font-size:.9rem; color:var(--accent); text-decoration:none; }
+.nav-back {
+  display:flex; align-items:center; gap:7px;
+  font-family:'Share Tech Mono',monospace; font-size:.78rem;
+  color:var(--muted); text-decoration:none; transition:color .2s;
+  border:1px solid var(--border); padding:5px 12px; border-radius:4px;
+}
+.nav-back:hover { color:var(--accent); border-color:rgba(57,255,133,.3); }
+.nav-back svg { transition:transform .2s; }
+.nav-back:hover svg { transform:translateX(-3px); }
+
+/* HERO */
+.hero {
+  min-height:42vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:8rem 2rem 3rem; text-align:center; position:relative;
+  background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(57,255,133,0.07) 0%, transparent 70%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(57,255,133,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,133,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 0%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-icon {
+  font-size:58px; margin-bottom:1rem; position:relative; z-index:1;
+  filter:drop-shadow(0 0 22px rgba(57,255,133,0.55));
+  animation:float 3.5s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+.hero h1 {
+  font-size:clamp(2rem,5vw,3.4rem); font-weight:800; letter-spacing:-.02em;
+  position:relative; z-index:1;
+  background:linear-gradient(135deg,#e8e8f0 30%,var(--accent));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:fadeUp .7s ease both;
+}
+.hero-sub {
+  font-family:'Share Tech Mono',monospace; font-size:.9rem; color:var(--muted);
+  margin-top:.6rem; position:relative; z-index:1;
+  animation:fadeUp .7s .15s ease both; opacity:0; animation-fill-mode:forwards;
+}
+.hero-sub::before { content:'> '; color:var(--accent); }
+
+/* rank badge */
+.rank-row {
+  display:flex; gap:.75rem; margin-top:1rem; flex-wrap:wrap; justify-content:center;
+  position:relative; z-index:1;
+  animation:fadeUp .7s .3s ease both; opacity:0; animation-fill-mode:forwards;
+}
+.rank-badge {
+  font-family:'Share Tech Mono',monospace; font-size:.72rem;
+  padding:5px 14px; border-radius:3px;
+  display:flex; align-items:center; gap:6px;
+}
+.rank-badge.g { background:rgba(57,255,133,.1); border:1px solid rgba(57,255,133,.3); color:var(--accent); }
+.rank-badge.r { background:rgba(255,70,85,.1); border:1px solid rgba(255,70,85,.3); color:var(--red); }
+
+main { max-width:900px; margin:0 auto; padding:3rem 2rem 6rem; }
+
+.section-label {
+  font-family:'Share Tech Mono',monospace; font-size:.72rem; color:var(--accent);
+  letter-spacing:.15em; text-transform:uppercase; margin-bottom:.5rem;
+}
+.section-label::before { content:'// '; }
+h2 {
+  font-size:1.6rem; font-weight:800; margin-bottom:1.8rem;
+  position:relative; display:inline-block;
+}
+h2::after {
+  content:''; position:absolute; bottom:-5px; left:0;
+  width:40%; height:2px; background:linear-gradient(90deg,var(--accent),transparent);
+}
+
+.about-box {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:2rem; margin-bottom:3rem;
+}
+.about-box p { color:var(--muted); line-height:1.8; font-size:.95rem; margin-bottom:1rem; }
+.about-box p:last-child { margin-bottom:0; }
+.about-box strong { color:var(--text); }
+
+/* TIPS */
+.tips-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:3rem; }
+.tip-card {
+  background:var(--card); border:1px solid var(--border); border-radius:8px;
+  padding:1.25rem; transition:all .2s; position:relative; overflow:hidden;
+}
+.tip-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform .3s;
+}
+.tip-card:hover { border-color:rgba(57,255,133,.3); transform:translateY(-2px); }
+.tip-card:hover::before { transform:scaleX(1); }
+.tip-num { font-family:'Share Tech Mono',monospace; font-size:.7rem; color:var(--accent); margin-bottom:.5rem; }
+.tip-title { font-weight:700; font-size:.9rem; margin-bottom:.4rem; }
+.tip-text { font-size:.82rem; color:var(--muted); line-height:1.6; }
+
+/* STAT ROW */
+.stat-row {
+  display:flex; gap:1px; margin-bottom:3rem;
+  border:1px solid var(--border); border-radius:8px; overflow:hidden;
+}
+.stat-item {
+  flex:1; padding:1.25rem; text-align:center;
+  background:var(--card); border-right:1px solid var(--border); transition:background .2s;
+}
+.stat-item:last-child { border-right:none; }
+.stat-item:hover { background:#1a1a25; }
+.stat-n { font-size:1.6rem; font-weight:800; color:var(--accent); margin-bottom:.2rem; }
+.stat-l { font-family:'Share Tech Mono',monospace; font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+
+/* UPLOAD */
+.upload-section { margin-bottom:3.5rem; }
+.upload-zone {
+  border:2px dashed rgba(57,255,133,.25); border-radius:10px;
+  padding:3rem 2rem; text-align:center; cursor:pointer;
+  transition:all .3s; background:rgba(57,255,133,.02);
+}
+.upload-zone:hover, .upload-zone.drag { border-color:var(--accent); background:rgba(57,255,133,.05); box-shadow:0 0 28px rgba(57,255,133,.1); }
+.upload-icon { font-size:36px; margin-bottom:.75rem; display:block; }
+.upload-title { font-family:'Share Tech Mono',monospace; font-size:.95rem; color:var(--text); margin-bottom:.4rem; }
+.upload-sub { font-family:'Share Tech Mono',monospace; font-size:.75rem; color:var(--muted); }
+.upload-sub span { color:var(--accent); }
+#fileInput { display:none; }
+
+/* CLIPS GRID */
+.clips-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; margin-top:1.5rem; }
+.clip-item {
+  background:var(--card); border:1px solid var(--border); border-radius:8px;
+  overflow:hidden; transition:all .25s;
+  animation:fadeUp .5s ease both; position:relative;
+}
+.clip-item:hover { border-color:rgba(57,255,133,.4); transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,.5); }
+.clip-item video { width:100%; height:160px; object-fit:cover; display:block; }
+.clip-item img { width:100%; height:160px; object-fit:cover; display:block; }
+.clip-item .file-preview {
+  width:100%; height:160px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:8px;
+  background:linear-gradient(135deg,rgba(57,255,133,.04),transparent);
+}
+.file-icon { font-size:30px; }
+.file-ext {
+  font-family:'Share Tech Mono',monospace; font-size:.65rem;
+  color:var(--accent); background:rgba(57,255,133,.1);
+  border:1px solid rgba(57,255,133,.2); padding:2px 8px; border-radius:3px;
+}
+/* play overlay */
+.play-overlay {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:44px; height:44px; border-radius:50%;
+  background:rgba(57,255,133,.2); border:2px solid rgba(57,255,133,.6);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; pointer-events:none; transition:opacity .2s;
+}
+.clip-item:not(.has-preview) .play-overlay { display:none; }
+.clip-item:hover .play-overlay { opacity:0; }
+
+.clip-bar {
+  padding:8px 10px; display:flex; align-items:center; justify-content:space-between;
+  border-top:1px solid var(--border); gap:6px;
+}
+.clip-name { font-family:'Share Tech Mono',monospace; font-size:.66rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; }
+.clip-type {
+  font-family:'Share Tech Mono',monospace; font-size:.62rem;
+  padding:2px 6px; border-radius:3px;
+  background:rgba(57,255,133,.08); border:1px solid rgba(57,255,133,.2); color:var(--accent);
+  white-space:nowrap; flex-shrink:0;
+}
+.item-del { background:none; border:none; color:var(--muted); cursor:pointer; font-size:13px; padding:2px 5px; border-radius:3px; transition:all .2s; flex-shrink:0; }
+.item-del:hover { color:#ff5f57; background:rgba(255,95,87,.1); }
+
+.empty-state {
+  text-align:center; padding:2.5rem; color:var(--muted);
+  font-family:'Share Tech Mono',monospace; font-size:.8rem;
+  border:1px solid var(--border); border-radius:8px;
+  background:rgba(255,255,255,.01); margin-top:1.5rem;
+}
+.empty-state .e-icon { font-size:30px; margin-bottom:.5rem; opacity:.4; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+
+@media(max-width:500px) { .stat-row{flex-wrap:wrap} .stat-item{flex:calc(50% - 1px);border-right:none;border-bottom:1px solid var(--border)} }
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">Ad1e</a>
+  <a class="nav-back" href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-icon">🎯</div>
+  <h1>ValoClips</h1>
+  <p class="hero-sub">Clutch · 1v5 · Line-up · Aim Tips</p>
+  <div class="rank-row">
+    <span class="rank-badge g">🟢 PRO-GENTLE</span>
+    <span class="rank-badge r">🔴 ALWAYS CLUTCHING</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="section-label reveal">About</div>
+  <div class="about-box reveal">
+    <p>Simple tips at clips para maging <strong>mas magaling sa Valorant</strong>. Hindi kailangan ng malaking setup — practice lang nang practice at pag-aralan ang mechanics ng laro.</p>
+    <p>I-upload ang iyong mga <strong>highlight clips, ace moments, at clutch plays</strong> dito! Para ma-share sa lahat at ma-inspire ang iba.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row reveal">
+    <div class="stat-item"><div class="stat-n">1v5</div><div class="stat-l">Best Clutch</div></div>
+    <div class="stat-item"><div class="stat-n">ACE</div><div class="stat-l">Goal Every Match</div></div>
+    <div class="stat-item"><div class="stat-n">HS%</div><div class="stat-l">Always Improving</div></div>
+    <div class="stat-item"><div class="stat-n">0ms</div><div class="stat-l">Mental Lag</div></div>
+  </div>
+
+  <div class="section-label reveal">Tips</div>
+  <h2 class="reveal">Pro Tips para Sayo</h2>
+  <div class="tips-grid">
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_01</div>
+      <div class="tip-title">Crosshair Placement</div>
+      <p class="tip-text">Palaging i-aim sa head level bago pa lumiko. Reaction time mo na lang ang kulang.</p>
+    </div>
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_02</div>
+      <div class="tip-title">Counter-Strafe</div>
+      <p class="tip-text">Pindutin ang kabila ng direction mo bago mag-shoot para accurate ang tama.</p>
+    </div>
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_03</div>
+      <div class="tip-title">Utility Usage</div>
+      <p class="tip-text">Huwag i-waste ang iyong abilities. I-learn ang line-ups para max impact.</p>
+    </div>
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_04</div>
+      <div class="tip-title">Mental Reset</div>
+      <p class="tip-text">Maging talo man, huwag tilang. Bawat round ay bagong laban. Stay calm!</p>
+    </div>
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_05</div>
+      <div class="tip-title">Map Awareness</div>
+      <p class="tip-text">Pakinggan ang footsteps. Naririnig mo ang laro bago mo pa makita.</p>
+    </div>
+    <div class="tip-card reveal">
+      <div class="tip-num">TIP_06</div>
+      <div class="tip-title">Economy</div>
+      <p class="tip-text">Mag-save kapag kailangan. Mas mahirap manalo pag walang pera ang team.</p>
+    </div>
+  </div>
+
+  <!-- CLIPS UPLOAD -->
+  <div class="upload-section reveal">
+    <div class="section-label">Clips</div>
+    <h2>My Highlight Clips</h2>
+
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <span class="upload-icon">🎬</span>
+      <p class="upload-title">I-upload ang iyong Valo clips dito</p>
+      <p class="upload-sub">Drag &amp; drop o <span>click para mag-browse</span> — MP4, MOV, WebM, PNG, JPG</p>
+      <input type="file" id="fileInput" multiple accept="video/*,image/*" />
+    </div>
+
+    <div id="gallery" class="clips-grid"></div>
+    <div class="empty-state" id="emptyState">
+      <div class="e-icon">🎯</div>
+      Wala pang clips. I-share ang iyong best Valo moments!
+    </div>
+  </div>
+
+</main>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+const gallery = document.getElementById('gallery');
+const emptyState = document.getElementById('emptyState');
+let fc = 0;
+
+function updateEmpty() { emptyState.style.display = gallery.children.length === 0 ? 'block' : 'none'; }
+
+function addFile(file) {
+  const item = document.createElement('div');
+  item.className = 'clip-item';
+  item.style.animationDelay = (fc * 0.06) + 's';
+  fc++;
+  const url = URL.createObjectURL(file);
+  const name = file.name.length > 22 ? file.name.slice(0,19)+'...' : file.name;
+  const ext = file.name.split('.').pop().toUpperCase();
+  const isVid = file.type.startsWith('video/');
+  const isImg = file.type.startsWith('image/');
+
+  let preview = '';
+  let typeLabel = ext;
+  if (isVid) {
+    item.classList.add('has-preview');
+    preview = `<video src="${url}" muted loop preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0"></video><div class="play-overlay">▶</div>`;
+    typeLabel = 'VIDEO';
+  } else if (isImg) {
+    preview = `<img src="${url}" alt="${file.name}" loading="lazy"/>`;
+    typeLabel = 'SCREENSHOT';
+  } else {
+    preview = `<div class="file-preview"><div class="file-icon">📁</div><div class="file-ext">${ext}</div></div>`;
+  }
+
+  item.innerHTML = `
+    ${preview}
+    <div class="clip-bar">
+      <span class="clip-name">${name}</span>
+      <span class="clip-type">${typeLabel}</span>
+      <button class="item-del" onclick="this.closest('.clip-item').remove();updateEmpty()">✕</button>
+    </div>
+  `;
+  gallery.appendChild(item);
+  updateEmpty();
+}
+
+fileInput.addEventListener('change', e => { [...e.target.files].forEach(addFile); fileInput.value=''; });
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag'); [...e.dataTransfer.files].forEach(addFile); });
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); } });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+updateEmpty();
+</script>
+</body>
+</html>
