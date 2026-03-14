@@ -27,7 +27,15 @@ nav {
   background:rgba(10,10,15,0.88); backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border);
 }
-.nav-logo { font-family:'Share Tech Mono',monospace; font-size:.9rem; color:var(--accent); text-decoration:none; }
+.nav-logo {
+  display:flex; align-items:center; text-decoration:none;
+}
+.nav-logo img {
+  width:34px; height:34px; border-radius:50%;
+  object-fit:cover; object-position:top;
+  border:1.5px solid var(--accent);
+  box-shadow:0 0 8px rgba(191,95,255,.35);
+}
 .nav-back {
   display:flex; align-items:center; gap:7px;
   font-family:'Share Tech Mono',monospace; font-size:.78rem;
@@ -38,7 +46,6 @@ nav {
 .nav-back svg { transition:transform .2s; }
 .nav-back:hover svg { transform:translateX(-3px); }
  
-/* HERO */
 .hero {
   min-height:40vh; display:flex; flex-direction:column;
   align-items:center; justify-content:center;
@@ -108,7 +115,6 @@ h2::after {
 .about-box p:last-child { margin-bottom:0; }
 .about-box strong { color:var(--text); }
  
-/* QUOTE */
 .quote-block {
   border-left:3px solid var(--accent); padding:1rem 1.5rem; margin-bottom:3rem;
   background:rgba(191,95,255,.04); border-radius:0 8px 8px 0;
@@ -116,7 +122,6 @@ h2::after {
 .quote-text { font-size:1.05rem; color:var(--text); font-style:italic; line-height:1.7; margin-bottom:.5rem; }
 .quote-src { font-family:'Share Tech Mono',monospace; font-size:.72rem; color:var(--muted); }
  
-/* VIBES */
 .vibes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:3rem; }
 .vibe-card {
   background:var(--card); border:1px solid var(--border); border-radius:8px;
@@ -127,8 +132,6 @@ h2::after {
 .vibe-label { font-family:'Share Tech Mono',monospace; font-size:.75rem; color:var(--accent); margin-bottom:.3rem; }
 .vibe-desc { font-size:.82rem; color:var(--muted); line-height:1.5; }
  
- 
-/* FILES SECTION */
 .files-section { margin-bottom:3.5rem; }
 .files-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:14px; margin-top:1.5rem; }
  
@@ -177,7 +180,7 @@ a { text-decoration:none; color:inherit; }
 <div class="scanline"></div>
  
 <nav>
-  <a class="nav-logo" href="index.html">Ad1e</a>
+  <a class="nav-logo" href="index.html"><img src="avatar.png" alt="Arnold" /></a>
   <a class="nav-back" href="index.html">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
     Back
@@ -235,15 +238,10 @@ a { text-decoration:none; color:inherit; }
     </div>
   </div>
  
- 
- 
-  <!-- FILES SECTION -->
   <div class="files-section reveal">
     <div class="section-label">Practice Task</div>
     <h2>My Task</h2>
- 
     <div class="files-grid">
- 
       <a href="https://1drv.ms/x/c/d9c4b74ecdd66e62/IQA21HsMRnG7SZXCfe-P2r9tAb9-6nTqgzEf_IcAzmQK5co?e=ZFCJOA">
         <div class="file-card clickable" style="animation-delay:.05s">
           <div class="file-thumb">
@@ -257,7 +255,6 @@ a { text-decoration:none; color:inherit; }
           </div>
         </div>
       </a>
- 
       <a href="https://1drv.ms/x/c/d9c4b74ecdd66e62/IQDPBv_0J1VkT7rbRQXMNZgFAYoWz_n6xjE9tU69AHPCTqM?e=7hg9as">
         <div class="file-card clickable" style="animation-delay:.1s">
           <div class="file-thumb">
@@ -271,7 +268,6 @@ a { text-decoration:none; color:inherit; }
           </div>
         </div>
       </a>
- 
       <a href="https://1drv.ms/x/c/d9c4b74ecdd66e62/IQC8bCz-h4YcTLNer3iPWjmRAV31tCLTPT_2CtYqjOgCcjY?e=RMeHFf">
         <div class="file-card clickable" style="animation-delay:.15s">
           <div class="file-thumb">
@@ -285,7 +281,6 @@ a { text-decoration:none; color:inherit; }
           </div>
         </div>
       </a>
- 
     </div>
   </div>
  
@@ -296,7 +291,6 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); } });
 },{threshold:.1});
 document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
- 
 </script>
 </body>
 </html>
